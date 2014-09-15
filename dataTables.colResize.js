@@ -14,7 +14,7 @@
 (function (window, document, undefined) {
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-     * DataTables plug-in API functions
+     * DataTables plug-in API functions test
      *
      * This are required by ColResize in order to perform the tasks required, and also keep this
      * code portable, to be used for other column resize projects with DataTables, if needed.
