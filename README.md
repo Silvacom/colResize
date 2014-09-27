@@ -54,7 +54,7 @@ To exclude columns from resizing simply add the index to the exclude array.
 		$('#example').dataTable( {
 			"dom": 'Zlfrtip',
 			"colResize": {
-				"exclude": [0,1,2];
+				"exclude": [0,1,2]
 			}
 		} );
 	} );
