@@ -29,7 +29,7 @@ By default it is fixed width, for variable set tableWidthFixed to false:
 		$('#example').dataTable( {
 			"dom": 'Zlfrtip',
 			"colResize": {
-				"tableWidthFixed": false;
+				"tableWidthFixed": false
 			}
 		} );
 	} );
@@ -43,7 +43,7 @@ For right to left set rtl to true:
 		$('#example').dataTable( {
 			"dom": 'Zlfrtip',
 			"colResize": {
-				"rtl": true;
+				"rtl": true
 			}
 		} );
 	} );
