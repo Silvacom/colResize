@@ -356,11 +356,13 @@
              */
             "_fnMouseEnter": function (e, nTh) {
                 var that = this;
-                //Once the mouse has entered the cell add mouse move event to see if the mouse is over resize handle
-                $(nTh).off('mousemove.ColResizeHandle').on('mousemove.ColResizeHandle', function (e) {
-                    e.preventDefault();
-                    that._fnResizeHandleCheck.call(that, e, nTh);
-                });
+                if(!that.s.isMousedown) {
+                	//Once the mouse has entered the cell add mouse move event to see if the mouse is over resize handle
+                	$(nTh).off('mousemove.ColResizeHandle').on('mousemove.ColResizeHandle', function (e) {
+                    	e.preventDefault();
+                    	that._fnResizeHandleCheck.call(that, e, nTh);
+                	});
+                }
             },
 
             /**
@@ -395,8 +397,8 @@
                 this.s.mouse.startY = e.pageY;
 
                 //Store the indexes of the columns the mouse is down on
-                var idx = parseInt(that.dom.resizeCol.attr('data-column-index'), 10);
-                var idxNeighbour = parseInt(that.dom.resizeColNeighbour.attr('data-column-index'), 10);
+                var idx = that.dom.resizeCol.index();
+                var idxNeighbour = that.dom.resizeColNeighbour.index();
 
                 if (idx === undefined) {
                     return;
@@ -438,7 +440,7 @@
                 //Get the minimum width of the column (default minimum 10px)
                 var minColumnWidth = Math.max(parseInt($(that.s.mouse.targetColumn.nTh).css('min-width')), 10);
                 //Store the previous width of the column
-                var prevWidth = parseInt(that.s.mouse.targetColumn.width);
+                var prevWidth = $(that.s.mouse.targetColumn.nTh).width();
                 //As long as the cursor is past the handle, resize the columns
                 if ((dx > 0 && distFromRight <= 0) || (dx < 0 && distFromRight >= 0)) {
                     if (!that.s.init.tableWidthFixed) {
@@ -473,7 +475,7 @@
                             //Subtract the width from the neighbour column if it exists if it is a fixed width table
                             var neighbourMinColumnWidth = Math.max(parseInt($(that.s.mouse.neighbourColumn.nTh).css('min-width')), 10);
                             //Store the previous width of the column
-                            var neighbourPrevWidth = parseInt(that.s.mouse.neighbourColumn.width);
+                            var neighbourPrevWidth = $(that.s.mouse.neighbourColumn.nTh).width();
 
                             //In a fixed table width situation the width must be shared between the columns
                             var combinedWidthMaximum = prevWidth + neighbourPrevWidth;
@@ -612,7 +614,7 @@
                 var DTFC_LeftWidth = LeftWrapper.width();
                 LeftWrapper.children(".DTFC_LeftHeadWrapper").children("table").width(DTFC_LeftWidth);
 
-                if (that.s.init.resizeCallback !== null) {
+                if (that.s.init.resizeCallback) {
                     that.s.init.resizeCallback.call(that, that.s.mouse.targetColumn);
                 }
             },
@@ -693,7 +695,7 @@
              * if false:
              *      -Columns will resize themselves and increase or decrease the width of the table accordingly
              */
-            "tableWidthFixed": false,
+            "tableWidthFixed": true,
 
             /**
              * Width of the resize handle in pixels
