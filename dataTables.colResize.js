@@ -677,7 +677,7 @@
              *  @default null
              *  @static
              */
-            fnResizeCallback: null,
+            "resizeCallback": null,
 
             /**
              * Exclude array for columns that are not resizable
