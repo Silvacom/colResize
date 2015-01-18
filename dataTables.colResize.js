@@ -237,6 +237,8 @@
                     this.s.dt.aoColumns[i]._ColResize_iOrigWidth = this.s.dt.aoColumns[i].width;
                 }
 
+                this._fnSetColumnIndexes();
+
                 /* State saving */
                 //		this.s.dt.oApi._fnCallbackReg( this.s.dt, 'aoStateSaveParams', function (oS, oData) {
                 //			that._fnStateSave.call( that, oData );
@@ -448,7 +450,7 @@
                         var newColWidth = Math.max(minColumnWidth, prevWidth + dx);
                         //Get the width difference (take into account the columns minimum width)
                         var widthDiff = newColWidth - prevWidth;
-                        var colResizeIdx = parseInt(that.dom.resizeCol.data("column-index"));
+                        var colResizeIdx = parseInt(that.dom.resizeCol.attr("data-column-index"));
                         //Set datatable column widths
                         that.s.mouse.targetColumn.sWidthOrig = that.s.mouse.targetColumn.sWidth = that.s.mouse.targetColumn.width = newColWidth + "px";
                         var domCols = $(that.s.dt.nTableWrapper).find("th[data-column-index='"+colResizeIdx+"']");
@@ -483,15 +485,20 @@
                             var newColWidth = Math.min(Math.max(minColumnWidth, prevWidth + dx), combinedWidthMaximum - neighbourMinColumnWidth);
                             //As long as the width is larger than the minimum and is not larger then the combined width
                             var neighbourNewColWidth = Math.min(Math.max(neighbourMinColumnWidth, neighbourPrevWidth - dx), combinedWidthMaximum - minColumnWidth);
+
+                            var tableContainer = $(that.s.dt.nTableWrapper);
+
                             //Set datatable column widths
                             that.s.mouse.targetColumn.sWidthOrig = that.s.mouse.targetColumn.sWidth = that.s.mouse.targetColumn.width = newColWidth + "px";
-                            that.dom.resizeCol.width(that.s.mouse.targetColumn.width);
-                            that.dom.resizeCol.parents('.dataTables_scrollHead').next().find('thead tr th:nth-child(' + (parseInt(that.dom.resizeCol.data("column-index")) + 1) + ')').width(that.s.mouse.targetColumn.width);
+                            var resizeColIndex = parseInt(that.dom.resizeCol.attr("data-column-index")) + 1;
+                            var elementsToResize = tableContainer.find('tr th:nth-child(' + resizeColIndex + ')');
+                            elementsToResize.width(that.s.mouse.targetColumn.width);
 
                             //Set datatable column widths
                             that.s.mouse.neighbourColumn.sWidthOrig = that.s.mouse.neighbourColumn.sWidth = that.s.mouse.neighbourColumn.width = neighbourNewColWidth + "px";
-                            that.dom.resizeColNeighbour.width(that.s.mouse.neighbourColumn.width);
-                            that.dom.resizeColNeighbour.parents('.dataTables_scrollHead').next().find('thead tr th:nth-child(' + (parseInt(that.dom.resizeColNeighbour.data("column-index")) + 1) + ')').width(that.s.mouse.neighbourColumn.width);
+                            var resizeColNeighborIndex = parseInt(that.dom.resizeColNeighbour.attr("data-column-index")) + 1;
+                            elementsToResize = tableContainer.find('tr th:nth-child(' + resizeColNeighborIndex + ')');
+                            elementsToResize.width(that.s.mouse.neighbourColumn.width);
                         }
                     }
                 }
