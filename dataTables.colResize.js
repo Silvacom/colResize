@@ -491,13 +491,15 @@
                             //Set datatable column widths
                             that.s.mouse.targetColumn.sWidthOrig = that.s.mouse.targetColumn.sWidth = that.s.mouse.targetColumn.width = newColWidth + "px";
                             var resizeColIndex = parseInt(that.dom.resizeCol.attr("data-column-index")) + 1;
-                            var elementsToResize = tableContainer.find('tr th:nth-child(' + resizeColIndex + ')');
+                            var elementsToResize = tableContainer.find('table.dataTable thead tr th:nth-child(' + resizeColIndex + '), ' +
+                              'table.dataTable tfoot tr th:nth-child(' + resizeColIndex + ')');
                             elementsToResize.width(that.s.mouse.targetColumn.width);
 
                             //Set datatable column widths
                             that.s.mouse.neighbourColumn.sWidthOrig = that.s.mouse.neighbourColumn.sWidth = that.s.mouse.neighbourColumn.width = neighbourNewColWidth + "px";
                             var resizeColNeighborIndex = parseInt(that.dom.resizeColNeighbour.attr("data-column-index")) + 1;
-                            elementsToResize = tableContainer.find('tr th:nth-child(' + resizeColNeighborIndex + ')');
+                            elementsToResize = tableContainer.find('table.dataTable thead tr th:nth-child(' + resizeColNeighborIndex + '), ' +
+                              'table.dataTable tfoot tr th:nth-child(' + resizeColNeighborIndex + ')');
                             elementsToResize.width(that.s.mouse.neighbourColumn.width);
                         }
                     }
