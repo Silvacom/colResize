@@ -1,4 +1,4 @@
-colResize 0.0.3
+colResize 0.0.4
 =========
 
 A DataTables plugin for dynamic resizing of columns
