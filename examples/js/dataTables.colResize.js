@@ -1,14 +1,18 @@
-/*! ColResize 0.0.2
+/*! ColResize 0.0.4
  */
 
 /**
  * @summary     ColResize
  * @description Provide the ability to resize columns in a DataTable
- * @version     0.0.2
+ * @version     0.0.4
  * @file        dataTables.colResize.js
  * @author      Silvacom Ltd.
  *
  * For details please refer to: http://www.datatables.net
+ *
+ * Special thank to everyone who has contributed to this plug in
+ * - dykstrad
+ * - tdillan (for 0.0.3 bug fixes)
  */
 
 (function (window, document, undefined) {
@@ -565,7 +569,7 @@
 
                 //If table width is fixed make sure both columns are resizable else just check the one.
                 if(this.s.init.tableWidthFixed)
-                    resizeAvailable &= this.s.init.exclude.indexOf(parseInt($(that.dom.resizeCol).attr("data-column-index"))) == -1 || this.s.init.exclude.indexOf(parseInt($(that.dom.resizeColNeighbour).attr("data-column-index"))) == -1;
+                    resizeAvailable &= this.s.init.exclude.indexOf(parseInt($(that.dom.resizeCol).attr("data-column-index"))) == -1 && this.s.init.exclude.indexOf(parseInt($(that.dom.resizeColNeighbour).attr("data-column-index"))) == -1;
                 else
                     resizeAvailable &= this.s.init.exclude.indexOf(parseInt($(that.dom.resizeCol).attr("data-column-index"))) == -1;
 
