@@ -277,9 +277,10 @@
                 // Only apply the saved widths if the number of columns is the same.
                 // Otherwise, we don't know if we're applying the width to the correct column.
                 if (colStates.length > 0 && colStates.length === currCols.length) {
-                  colStates.forEach(function(col, index) {
-                    if (col.width) {
-                      that.s.dt.aoColumns[index].sWidthOrig = col.width;
+                  colStates.forEach(function(state, index) {
+                    var col = that.s.dt.aoColumns[index];
+                    if (state.width) {
+                      col.sWidthOrig = col.sWidth = state.width;
                     }
                   });
                 }
