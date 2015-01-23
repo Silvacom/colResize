@@ -244,19 +244,47 @@
                 this._fnSetColumnIndexes();
 
                 /* State saving */
-                //		this.s.dt.oApi._fnCallbackReg( this.s.dt, 'aoStateSaveParams', function (oS, oData) {
-                //			that._fnStateSave.call( that, oData );
-                //		}, "ColResize_State" );
+                this.s.dt.oApi._fnCallbackReg( this.s.dt, 'aoStateSaveParams', function (oS, oData) {
+                    that._fnStateSave.call(that, oData);
+                }, "ColResize_State" );
+
+                // State loading
+                this._fnStateLoad();
             },
 
             /**
-             * TODO
-             *  @method  _fnStateSave
-             *  @param   object oState DataTables state
-             *  @returns string JSON encoded cookie string for DataTables
-             *  @private
+             * @method  _fnStateSave
+             * @param   object oState DataTables state
+             * @private
              */
             "_fnStateSave": function (oState) {
+              this.s.dt.aoColumns.forEach(function(col, index) {
+                oState.columns[index].width = col.sWidthOrig;
+              });
+            },
+
+            /**
+             * If state has been loaded, apply the saved widths to the columns
+             * @method  _fnStateLoad
+             * @private
+             */
+            "_fnStateLoad": function() {
+              var that = this,
+                loadedState = this.s.dt.oLoadedState;
+              if (loadedState && loadedState.columns) {
+                var colStates = loadedState.columns,
+                  currCols = this.s.dt.aoColumns;
+                // Only apply the saved widths if the number of columns is the same.
+                // Otherwise, we don't know if we're applying the width to the correct column.
+                if (colStates.length > 0 && colStates.length === currCols.length) {
+                  colStates.forEach(function(state, index) {
+                    var col = that.s.dt.aoColumns[index];
+                    if (state.width) {
+                      col.sWidthOrig = col.sWidth = state.width;
+                    }
+                  });
+                }
+              }
             },
 
             /**
