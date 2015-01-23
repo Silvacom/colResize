@@ -1,10 +1,10 @@
-/*! ColResize 0.0.4
+/*! ColResize 0.0.5
  */
 
 /**
  * @summary     ColResize
  * @description Provide the ability to resize columns in a DataTable
- * @version     0.0.4
+ * @version     0.0.5
  * @file        dataTables.colResize.js
  * @author      Silvacom Ltd.
  *
@@ -12,7 +12,7 @@
  *
  * Special thank to everyone who has contributed to this plug in
  * - dykstrad
- * - tdillan (for 0.0.3 bug fixes)
+ * - tdillan (for 0.0.3 and 0.0.5 bug fixes)
  */
 
 (function (window, document, undefined) {
@@ -258,9 +258,9 @@
              * @private
              */
             "_fnStateSave": function (oState) {
-              this.s.dt.aoColumns.forEach(function(col, index) {
-                oState.columns[index].width = col.sWidthOrig;
-              });
+                this.s.dt.aoColumns.forEach(function(col, index) {
+                    oState.columns[index].width = col.sWidthOrig;
+                });
             },
 
             /**
@@ -269,22 +269,22 @@
              * @private
              */
             "_fnStateLoad": function() {
-              var that = this,
-                loadedState = this.s.dt.oLoadedState;
-              if (loadedState && loadedState.columns) {
-                var colStates = loadedState.columns,
-                  currCols = this.s.dt.aoColumns;
-                // Only apply the saved widths if the number of columns is the same.
-                // Otherwise, we don't know if we're applying the width to the correct column.
-                if (colStates.length > 0 && colStates.length === currCols.length) {
-                  colStates.forEach(function(state, index) {
-                    var col = that.s.dt.aoColumns[index];
-                    if (state.width) {
-                      col.sWidthOrig = col.sWidth = state.width;
+                var that = this,
+                    loadedState = this.s.dt.oLoadedState;
+                if (loadedState && loadedState.columns) {
+                    var colStates = loadedState.columns,
+                        currCols = this.s.dt.aoColumns;
+                    // Only apply the saved widths if the number of columns is the same.
+                    // Otherwise, we don't know if we're applying the width to the correct column.
+                    if (colStates.length > 0 && colStates.length === currCols.length) {
+                        colStates.forEach(function(state, index) {
+                            var col = that.s.dt.aoColumns[index];
+                            if (state.width) {
+                                col.sWidthOrig = col.sWidth = state.width;
+                            }
+                        });
                     }
-                  });
                 }
-              }
             },
 
             /**
@@ -391,11 +391,11 @@
             "_fnMouseEnter": function (e, nTh) {
                 var that = this;
                 if(!that.s.isMousedown) {
-                	//Once the mouse has entered the cell add mouse move event to see if the mouse is over resize handle
-                	$(nTh).off('mousemove.ColResizeHandle').on('mousemove.ColResizeHandle', function (e) {
-                    	e.preventDefault();
-                    	that._fnResizeHandleCheck.call(that, e, nTh);
-                	});
+                    //Once the mouse has entered the cell add mouse move event to see if the mouse is over resize handle
+                    $(nTh).off('mousemove.ColResizeHandle').on('mousemove.ColResizeHandle', function (e) {
+                        e.preventDefault();
+                        that._fnResizeHandleCheck.call(that, e, nTh);
+                    });
                 }
             },
 
@@ -524,14 +524,14 @@
                             that.s.mouse.targetColumn.sWidthOrig = that.s.mouse.targetColumn.sWidth = that.s.mouse.targetColumn.width = newColWidth + "px";
                             var resizeColIndex = parseInt(that.dom.resizeCol.attr("data-column-index")) + 1;
                             var elementsToResize = tableContainer.find('table.dataTable thead tr th:nth-child(' + resizeColIndex + '), ' +
-                              'table.dataTable tfoot tr th:nth-child(' + resizeColIndex + ')');
+                            'table.dataTable tfoot tr th:nth-child(' + resizeColIndex + ')');
                             elementsToResize.width(that.s.mouse.targetColumn.width);
 
                             //Set datatable column widths
                             that.s.mouse.neighbourColumn.sWidthOrig = that.s.mouse.neighbourColumn.sWidth = that.s.mouse.neighbourColumn.width = neighbourNewColWidth + "px";
                             var resizeColNeighborIndex = parseInt(that.dom.resizeColNeighbour.attr("data-column-index")) + 1;
                             elementsToResize = tableContainer.find('table.dataTable thead tr th:nth-child(' + resizeColNeighborIndex + '), ' +
-                              'table.dataTable tfoot tr th:nth-child(' + resizeColNeighborIndex + ')');
+                            'table.dataTable tfoot tr th:nth-child(' + resizeColNeighborIndex + ')');
                             elementsToResize.width(that.s.mouse.neighbourColumn.width);
                         }
                     }
@@ -613,9 +613,9 @@
                         e.preventDefault();
                         that._fnMouseDown.call(that, e, nTh);
                     })
-                    .off('click.ColResize').on('click.ColResize', function (e) {
-                        that._fnClick.call(that, e);
-                    });
+                        .off('click.ColResize').on('click.ColResize', function (e) {
+                            that._fnClick.call(that, e);
+                        });
                 } else {
                     $(nTh).css("cursor", "pointer");
                     $(nTh).off('mousedown.ColResize click.ColResize');
