@@ -11,7 +11,7 @@
  * For details please refer to: http://www.datatables.net
  *
  * Special thank to everyone who has contributed to this plug in
- * - dykstrad
+ * -  dykstrad
  * - tdillan (for 0.0.3 and 0.0.5 bug fixes)
  */
 
