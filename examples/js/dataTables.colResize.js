@@ -1,10 +1,10 @@
-/*! ColResize 0.0.4
+/*! ColResize 0.0.5
  */
 
 /**
  * @summary     ColResize
  * @description Provide the ability to resize columns in a DataTable
- * @version     0.0.4
+ * @version     0.0.5
  * @file        dataTables.colResize.js
  * @author      Silvacom Ltd.
  *
@@ -12,7 +12,7 @@
  *
  * Special thank to everyone who has contributed to this plug in
  * - dykstrad
- * - tdillan (for 0.0.3 bug fixes)
+ * - tdillan (for 0.0.3 and 0.0.5 bug fixes)
  */
 
 (function (window, document, undefined) {
