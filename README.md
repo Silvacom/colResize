@@ -1,4 +1,4 @@
-colResize 0.0.5
+colResize 0.0.6
 =========
 
 A DataTables plugin for dynamic resizing of columns
@@ -23,6 +23,8 @@ ColResize is initialised using the `Z` option that it adds to DataTables' `dom` 
 ColResize supports both fixed width tables and variable width tables.
 Fixed width table splits the column width difference between itself and its neighbour column.
 Variable width tables increase/decreases the width of the table the same amount as the column being resized.
+In order for a variable width tables to work, the table needs to be wrapped in a container that allows the table to resize.
+One way is to wrap it in a div that has a style of overflow-x: auto.
 By default it is fixed width, for variable set tableWidthFixed to false:
 
 	$(document).ready( function () {
