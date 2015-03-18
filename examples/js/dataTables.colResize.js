@@ -1,10 +1,10 @@
-/*! ColResize 0.0.5
+/*! ColResize 0.0.6
  */
 
 /**
  * @summary     ColResize
  * @description Provide the ability to resize columns in a DataTable
- * @version     0.0.5
+ * @version     0.0.6
  * @file        dataTables.colResize.js
  * @author      Silvacom Ltd.
  *
@@ -431,8 +431,8 @@
                 this.s.mouse.startY = e.pageY;
 
                 //Store the indexes of the columns the mouse is down on
-                var idx = that.dom.resizeCol.index();
-                var idxNeighbour = that.dom.resizeColNeighbour.index();
+                var idx = that.dom.resizeCol.data("column-index");
+                var idxNeighbour = that.dom.resizeColNeighbour.data("column-index");
 
                 if (idx === undefined) {
                     return;
@@ -487,6 +487,7 @@
                         that.s.mouse.targetColumn.sWidthOrig = that.s.mouse.targetColumn.sWidth = that.s.mouse.targetColumn.width = newColWidth + "px";
                         var domCols = $(that.s.dt.nTableWrapper).find("th[data-column-index='"+colResizeIdx+"']");
                         //For each table expand the width by the same amount as the column
+                        //This accounts for other datatable plugins like FixedColumns
                         domCols.parents("table").each(function() {
                             if(!$(this).parent().hasClass("DTFC_LeftBodyLiner")) {
                                 var newWidth = $(this).width() + widthDiff;
@@ -498,41 +499,39 @@
                                 $(this).width(newWidth);
                             }
                         });
-                        //Expand the table width as well as the column width if the table is not fixed width
-                        //that.dom.resizeCol.parents("table").width(that.dom.resizeCol.parents("table").width() + widthDiff);
-                        //Get all table rows for the column (covers all datatables plugins like fixed columns etc...)
+                        //Apply the new width to the columns after the table has been resized
                         domCols.width(that.s.mouse.targetColumn.width);
-
-//                        that.dom.resizeCol.parents('.dataTables_scrollHead').next().children("table").width(that.dom.resizeCol.parents("table").width());
                     } else {
+                        //A neighbour column must exist in order to resize a column in a table with a fixed width
                         if (that.s.mouse.neighbourColumn) {
-                            //Subtract the width from the neighbour column if it exists if it is a fixed width table
-                            var neighbourMinColumnWidth = Math.max(parseInt($(that.s.mouse.neighbourColumn.nTh).css('min-width')), 10);
-                            //Store the previous width of the column
-                            var neighbourPrevWidth = $(that.s.mouse.neighbourColumn.nTh).width();
-
-                            //In a fixed table width situation the width must be shared between the columns
-                            var combinedWidthMaximum = prevWidth + neighbourPrevWidth;
-                            //As long as the width is larger than the minimum and is not larger then the combined width
-                            var newColWidth = Math.min(Math.max(minColumnWidth, prevWidth + dx), combinedWidthMaximum - neighbourMinColumnWidth);
-                            //As long as the width is larger than the minimum and is not larger then the combined width
-                            var neighbourNewColWidth = Math.min(Math.max(neighbourMinColumnWidth, neighbourPrevWidth - dx), combinedWidthMaximum - minColumnWidth);
-
-                            var tableContainer = $(that.s.dt.nTableWrapper);
-
+                            //Get the minimum width of the neighbor column (default minimum 10px)
+                            var minColumnNeighbourWidth = Math.max(parseInt($(that.s.mouse.neighbourColumn.nTh).css('min-width')), 10);
+                            //Store the previous width of the neighbour column
+                            var prevNeighbourWidth = $(that.s.mouse.neighbourColumn.nTh).width();
+                            //As long as the width is larger than the minimum
+                            var newColWidth = Math.max(minColumnWidth, prevWidth + dx);
+                            var newColNeighbourWidth = Math.max(minColumnNeighbourWidth, prevNeighbourWidth - dx);
+                            //Get the width difference (take into account the columns minimum width)
+                            var widthDiff = newColWidth - prevWidth;
+                            var widthDiffNeighbour = newColNeighbourWidth - prevNeighbourWidth;
+                            //Get the column index for the column being changed
+                            var colResizeIdx = parseInt(that.dom.resizeCol.attr("data-column-index"));
+                            var neighbourColResizeIdx = parseInt(that.dom.resizeColNeighbour.attr("data-column-index"));
                             //Set datatable column widths
+                            that.s.mouse.neighbourColumn.sWidthOrig = that.s.mouse.neighbourColumn.sWidth = that.s.mouse.neighbourColumn.width = newColNeighbourWidth + "px";
                             that.s.mouse.targetColumn.sWidthOrig = that.s.mouse.targetColumn.sWidth = that.s.mouse.targetColumn.width = newColWidth + "px";
-                            var resizeColIndex = parseInt(that.dom.resizeCol.attr("data-column-index")) + 1;
-                            var elementsToResize = tableContainer.find('table.dataTable thead tr th:nth-child(' + resizeColIndex + '), ' +
-                              'table.dataTable tfoot tr th:nth-child(' + resizeColIndex + ')');
-                            elementsToResize.width(that.s.mouse.targetColumn.width);
-
-                            //Set datatable column widths
-                            that.s.mouse.neighbourColumn.sWidthOrig = that.s.mouse.neighbourColumn.sWidth = that.s.mouse.neighbourColumn.width = neighbourNewColWidth + "px";
-                            var resizeColNeighborIndex = parseInt(that.dom.resizeColNeighbour.attr("data-column-index")) + 1;
-                            elementsToResize = tableContainer.find('table.dataTable thead tr th:nth-child(' + resizeColNeighborIndex + '), ' +
-                              'table.dataTable tfoot tr th:nth-child(' + resizeColNeighborIndex + ')');
-                            elementsToResize.width(that.s.mouse.neighbourColumn.width);
+                            //Get list of columns based on column index in all affected tables tables. This accounts for other plugins like FixedColumns
+                            var domNeighbourCols = $(that.s.dt.nTableWrapper).find("th[data-column-index='" + neighbourColResizeIdx + "']");
+                            var domCols = $(that.s.dt.nTableWrapper).find("th[data-column-index='" + colResizeIdx + "']");
+                            //If dx if positive (the width is getting larger) shrink the neighbour columns first
+                            if(dx>0) {
+                                domNeighbourCols.width(that.s.mouse.neighbourColumn.width);
+                                domCols.width(that.s.mouse.targetColumn.width);
+                            } else {
+                                //Apply the new width to the columns then to the neighbour columns
+                                domCols.width(that.s.mouse.targetColumn.width);
+                                domNeighbourCols.width(that.s.mouse.neighbourColumn.width);
+                            }
                         }
                     }
                 }
@@ -766,7 +765,7 @@
          *  @type      String
          *  @default   As code
          */
-        ColResize.version = "0.0.2";
+        ColResize.version = "0.0.6";
 
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
