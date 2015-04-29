@@ -1,0 +1,28 @@
+{
+	"name": "datatables-colresize",
+	"description": "A plugin for resizing columns in DataTables",
+	"version": "0.0.6",
+  	"license": "MIT License",
+	"main": [
+		"dataTables.colResize.js"
+	],
+  	"keywords": [
+	  	"datatables",
+	  	"colresize",
+	  	"resize"
+	],
+  	"authors": [
+	  	"dykstrad",
+	  	"tdillan",
+	  	"kylealonius"
+	],
+  	"homepage": "https://github.com/Silvacom/colResize",
+  	"repository": {
+	  	"type": "git",
+	  	"url": "git://github.com/Silvacom/colResize.git"
+	},
+	"dependencies": {
+		"jquery": ">=1.7.0",
+		"datatables": ">=1.10.2"
+	}
+}

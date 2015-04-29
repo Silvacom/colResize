@@ -1,10 +1,10 @@
-/*! ColResize 0.0.6
+/*! ColResize 0.0.7
  */
 
 /**
  * @summary     ColResize
  * @description Provide the ability to resize columns in a DataTable
- * @version     0.0.6
+ * @version     0.0.7
  * @file        dataTables.colResize.js
  * @author      Silvacom Ltd.
  *
@@ -13,6 +13,7 @@
  * Special thank to everyone who has contributed to this plug in
  * - dykstrad
  * - tdillan (for 0.0.3 and 0.0.5 bug fixes)
+ * - kylealonius (for 0.0.7 bug fix)
  */
 
 (function (window, document, undefined) {
@@ -431,8 +432,8 @@
                 this.s.mouse.startY = e.pageY;
 
                 //Store the indexes of the columns the mouse is down on
-                var idx = that.dom.resizeCol.data("column-index");
-                var idxNeighbour = that.dom.resizeColNeighbour.data("column-index");
+                var idx = that.dom.resizeCol[0].cellIndex;
+                var idxNeighbour = that.dom.resizeColNeighbour[0].cellIndex;
 
                 if (idx === undefined) {
                     return;
@@ -765,7 +766,7 @@
          *  @type      String
          *  @default   As code
          */
-        ColResize.version = "0.0.6";
+        ColResize.version = "0.0.7";
 
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
