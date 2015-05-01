@@ -1,10 +1,10 @@
-/*! ColResize 0.0.7
+/*! ColResize 0.0.8
  */
 
 /**
  * @summary     ColResize
  * @description Provide the ability to resize columns in a DataTable
- * @version     0.0.7
+ * @version     0.0.8
  * @file        dataTables.colResize.js
  * @author      Silvacom Ltd.
  *
@@ -13,7 +13,7 @@
  * Special thank to everyone who has contributed to this plug in
  * - dykstrad
  * - tdillan (for 0.0.3 and 0.0.5 bug fixes)
- * - kylealonius (for 0.0.7 bug fix)
+ * - kylealonius (for 0.0.8 bug fix)
  */
 
 (function (window, document, undefined) {
@@ -766,7 +766,7 @@
          *  @type      String
          *  @default   As code
          */
-        ColResize.version = "0.0.7";
+        ColResize.version = "0.0.8";
 
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -821,17 +821,17 @@
 
 
 // Define as an AMD module if possible
-if ( typeof define === 'function' && define.amd ) {
-    define( ['jquery', 'datatables'], factory );
-}
-else if ( typeof exports === 'object' ) {
-    // Node/CommonJS
-    factory( require('jquery'), require('datatables') );
-}
-else if (jQuery && !jQuery.fn.dataTable.ColResize) {
-    // Otherwise simply initialise as normal, stopping multiple evaluation
-    factory(jQuery, jQuery.fn.dataTable);
-}
+    if ( typeof define === 'function' && define.amd ) {
+        define( ['jquery', 'datatables'], factory );
+    }
+    else if ( typeof exports === 'object' ) {
+        // Node/CommonJS
+        factory( require('jquery'), require('datatables') );
+    }
+    else if (jQuery && !jQuery.fn.dataTable.ColResize) {
+        // Otherwise simply initialise as normal, stopping multiple evaluation
+        factory(jQuery, jQuery.fn.dataTable);
+    }
 
 
 })(window, document);

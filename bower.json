@@ -1,7 +1,7 @@
 {
 	"name": "datatables-colresize",
 	"description": "A plugin for resizing columns in DataTables",
-	"version": "0.0.6",
+	"version": "0.0.8",
   	"license": "MIT License",
 	"main": [
 		"dataTables.colResize.js"
