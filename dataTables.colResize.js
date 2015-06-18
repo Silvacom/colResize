@@ -434,10 +434,13 @@
                 //Store the indexes of the columns the mouse is down on
                 var idx = that.dom.resizeCol[0].cellIndex;
                 
-                if (that.dom.resizeColNeighbour[0] === undefined){
-                    return;
+               if (that.dom.resizeColNeighbour[0] === undefined){
+                    var idxNeighbour = 0;
+                } else {
+                        var idxNeighbour = that.dom.resizeColNeighbour[0].cellIndex;
                 }
-                var idxNeighbour = that.dom.resizeColNeighbour[0].cellIndex;
+                
+               
 
                 if (idx === undefined) {
                     return;
