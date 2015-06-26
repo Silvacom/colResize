@@ -1,10 +1,10 @@
-/*! ColResize 0.0.9
+/*! ColResize 0.0.10
  */
 
 /**
  * @summary     ColResize
  * @description Provide the ability to resize columns in a DataTable
- * @version     0.0.9
+ * @version     0.0.10
  * @file        dataTables.colResize.js
  * @author      Silvacom Ltd.
  *
@@ -26,29 +26,28 @@
      * code portable, to be used for other column resize projects with DataTables, if needed.
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-    /**
-     * Plug-in for DataTables which will resize the columns depending on the handle clicked
-     *  @method  $.fn.dataTableExt.oApi.fnColResize
-     *  @param   object oSettings DataTables settings object - automatically added by DataTables!
-     *  @param   int iCol Take the column to be resized
-     *  @returns void
-     */
-    $.fn.dataTableExt.oApi.fnColResize = function (oSettings, iCol) {
-        var v110 = $.fn.dataTable.Api ? true : false;
-
-        /*
-         * Update DataTables' event handlers
-         */
-
-        /* Fire an event so other plug-ins can update */
-        $(oSettings.oInstance).trigger('column-resize', [ oSettings, {
-            "iCol": iCol
-        } ]);
-    };
-
-
     var factory = function ($, DataTable) {
         "use strict";
+
+        /**
+         * Plug-in for DataTables which will resize the columns depending on the handle clicked
+         *  @method  $.fn.dataTableExt.oApi.fnColResize
+         *  @param   object oSettings DataTables settings object - automatically added by DataTables!
+         *  @param   int iCol Take the column to be resized
+         *  @returns void
+         */
+        $.fn.dataTableExt.oApi.fnColResize = function (oSettings, iCol) {
+            var v110 = $.fn.dataTable.Api ? true : false;
+
+            /*
+             * Update DataTables' event handlers
+             */
+
+            /* Fire an event so other plug-ins can update */
+            $(oSettings.oInstance).trigger('column-resize', [ oSettings, {
+                "iCol": iCol
+            } ]);
+        };
 
         /**
          * ColResize provides column resize control for DataTables
@@ -776,7 +775,7 @@
          *  @type      String
          *  @default   As code
          */
-        ColResize.version = "0.0.9";
+        ColResize.version = "0.0.10";
 
 
         /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
