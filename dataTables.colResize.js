@@ -434,10 +434,10 @@
                 //Store the indexes of the columns the mouse is down on
                 var idx = parseInt(that.dom.resizeCol.attr("data-column-index"));
                 
--               // the last column has no 'right-side' neighbour
--               // with fixed this can make the table smaller
--               if (that.dom.resizeColNeighbour[0] === undefined) {
--                   var idxNeighbour = 0;
+                // the last column has no 'right-side' neighbour
+                // with fixed this can make the table smaller
+                if (that.dom.resizeColNeighbour[0] === undefined) {
+                    var idxNeighbour = 0;
                 } else {
                     var idxNeighbour = parseInt(that.dom.resizeColNeighbour.attr("data-column-index"));
                 }
