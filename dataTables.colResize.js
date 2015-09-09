@@ -260,7 +260,7 @@
              */
             "_fnStateSave": function (oState) {
                 this.s.dt.aoColumns.forEach(function (col, index) {
-                    oState.columns[index].width = col.sWidthOrig;
+                    oState.columns[col._ColReorder_iOrigCol || index].width = col.sWidthOrig;
                 });
             },
 
@@ -433,7 +433,7 @@
 
                 //Store the indexes of the columns the mouse is down on
                 var idx = parseInt(that.dom.resizeCol.attr("data-column-index"));
-                
+
                 // the last column has no 'right-side' neighbour
                 // with fixed this can make the table smaller
                 if (that.dom.resizeColNeighbour[0] === undefined) {
