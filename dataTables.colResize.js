@@ -217,6 +217,19 @@
 
                 return this;
             },
+			
+			// awa added this function so I can set the col widths from the persisted state values
+			"fnSetColWidths": function (widths) {
+                for (var i = 0, iLen = widths.length; i < iLen; i++) {
+                    this.s.dt.aoColumns[i].width = widths[i];
+					this.s.dt.aoColumns[i]._ColResize_iOrigWidth = widths[i];
+					this.s.dt.aoColumns[i].sWidthOrig = this.s.dt.aoColumns[i].sWidth = widths[i];
+                }
+
+                this.s.dt.oInstance.fnAdjustColumnSizing();
+
+                return this;
+            },
 
 
             /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -351,15 +364,24 @@
             /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
              * Mouse drop and drag
              */
-
+			//grb added data-column-index attribute to footer.
+			 
             "_fnSetupMouseListeners": function () {
                 var that = this;
                 $(that.s.dt.nTableWrapper).off("mouseenter.ColResize").on("mouseenter.ColResize", "th", function (e) {
                     e.preventDefault();
+					if(that.s.dt.aoColumns.length>0 && typeof $(that.s.dt.aoColumns[0].nTf).attr('data-column-index') === "undefined")
+						$.each(that.s.dt.aoColumns, function (i, column) {
+							$(column.nTf).attr('data-column-index', $(column.nTh).attr('data-column-index'));
+						});	
                     that._fnMouseEnter.call(that, e, this);
                 });
                 $(that.s.dt.nTableWrapper).off("mouseleave.ColResize").on("mouseleave.ColResize", "th", function (e) {
-                    e.preventDefault();
+                    e.preventDefault();					
+					if(that.s.dt.aoColumns.length>0 && typeof $(that.s.dt.aoColumns[0].nTf).attr('data-column-index') === "undefined")
+						$.each(that.s.dt.aoColumns, function (i, column) {
+							$(column.nTf).attr('data-column-index',  $(column.nTh).attr('data-column-index'));
+						});
                     that._fnMouseLeave.call(that, e, this);
                 });
             },
@@ -420,7 +442,6 @@
              */
             "_fnMouseDown": function (e, nTh) {
                 var that = this;
-
                 that.s.isMousedown = true;
 
                 /* Store information about the mouse position */
@@ -553,7 +574,7 @@
              */
             "_fnResizeHandleCheck": function (e, nTh) {
                 var that = this;
-
+								
                 var offset = $(nTh).offset();
                 var relativeX = (e.pageX - offset.left);
                 var relativeY = (e.pageY - offset.top);
@@ -603,10 +624,11 @@
                 }
 
                 //If table width is fixed make sure both columns are resizable else just check the one.
-                if (this.s.init.tableWidthFixed)
-                    resizeAvailable &= this.s.init.exclude.indexOf(parseInt($(that.dom.resizeCol).attr("data-column-index"))) == -1 && this.s.init.exclude.indexOf(parseInt($(that.dom.resizeColNeighbour).attr("data-column-index"))) == -1;
-                else
-                    resizeAvailable &= this.s.init.exclude.indexOf(parseInt($(that.dom.resizeCol).attr("data-column-index"))) == -1;
+				if (this.s.init.tableWidthFixed)
+					resizeAvailable &= this.s.init.exclude.indexOf(parseInt($(that.dom.resizeCol).attr("data-column-index"))) == -1 && this.s.init.exclude.indexOf(parseInt($(that.dom.resizeColNeighbour).attr("data-column-index"))) == -1;
+				else
+					resizeAvailable &= this.s.init.exclude.indexOf(parseInt($(that.dom.resizeCol).attr("data-column-index"))) == -1;
+			
 
                 $(nTh).off('mousedown.ColResize');
                 if (resizeAvailable) {
@@ -687,6 +709,8 @@
 
                 $.each(this.s.dt.aoColumns, function (i, column) {
                     $(column.nTh).removeAttr('data-column-index');
+					//grb remove footer atribute
+					$(column.nTf).removeAttr('data-column-index');
                 });
 
                 this.s.dt._colResize = null;
@@ -703,7 +727,7 @@
             "_fnSetColumnIndexes": function () {
                 $.each(this.s.dt.aoColumns, function (i, column) {
                     $(column.nTh).attr('data-column-index', i);
-                });
+                });				
             }
         };
 
@@ -819,6 +843,12 @@
             $.fn.dataTable.Api.register('colResize.reset()', function () {
                 return this.iterator('table', function (ctx) {
                     ctx._colResize.fnReset();
+                });
+            });
+			// awa added this function so I can set the col widths from the persisted state values
+			$.fn.dataTable.Api.register('colResize.setColWidths()', function (widths) {
+                return this.iterator('table', function (ctx) {
+                    ctx._colResize.fnSetColWidths(widths);
                 });
             });
         }
