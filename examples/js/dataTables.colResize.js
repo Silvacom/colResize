@@ -483,6 +483,9 @@
                 var dx = e.pageX - that.s.mouse.startX;
                 //Get the minimum width of the column (default minimum 10px)
                 var minColumnWidth = Math.max(parseInt($(that.s.mouse.targetColumn.nTh).css('min-width')), 10);
+                //To make it run on IE
+                if(!$.isNumeric(minColumnWidth))
+                    minColumnWidth=10;
                 //Store the previous width of the column
                 var prevWidth = $(that.s.mouse.targetColumn.nTh).width();
                 //As long as the cursor is past the handle, resize the columns
