@@ -84,3 +84,15 @@ You can adjust the width of the resize handle (in px).
 			}
 		} );
 	} );
+	
+You can turn off Ajax calls after resizing. It works only on server side implementation of DataTables.
+    
+    	$(document).ready(function() {
+    		$('#example').DataTable( {
+    			"dom": 'Zlfrtip',
+    			"colResize": {
+    				"reloadAfterResize": false
+    			}
+    		} );
+    	} );
+
