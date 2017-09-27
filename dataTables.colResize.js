@@ -656,7 +656,7 @@
                 that.s.mouse.targetColumn.width = that.dom.resizeCol.width();
 
                 $(document).off('mousemove.ColResize mouseup.ColResize');
-                this.s.dt.oInstance.fnAdjustColumnSizing();
+                this.s.dt.oInstance.fnAdjustColumnSizing(that.s.init.reloadAfterResize);
                 //Table width fix, prevents extra gaps between tables
                 var LeftWrapper = $(that.s.dt.nTableWrapper).find(".DTFC_LeftWrapper");
                 var DTFC_LeftWidth = LeftWrapper.width();
@@ -759,7 +759,16 @@
              *  @type     bool
              *  @default  false
              */
-            "rtl": false
+            "rtl": false,
+
+            /**
+             * Call Ajax after column resize. Works only with server side implementation of DataTables
+             *  @property reloadAfterResize
+             *  @type     bool
+             *  @default  true
+             */
+            "reloadAfterResize" : true
+
         };
 
 
